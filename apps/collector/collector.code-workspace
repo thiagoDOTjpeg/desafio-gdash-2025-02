@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "/home/thiagogritti/Documentos/desafio-gdash-2025-02/apps/collector/venv/bin/python",
+    "python.analysis.extraPaths": [
+      "/home/thiagogritti/Documentos/desafio-gdash-2025-02/apps/collector/venv/lib64/python3.14/site-packages'"
+    ],
+    "python.envFile": "../.env",
+    "python.analysis.useLibraryCodeForTypes": true
+  }
+}

@@ -1,0 +1,77 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  # nestjs-api:
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #   container_name: nestjs-api
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     NODE_ENV: development
+  #     MONGO_URI: mongodb://mongodb:27017/gdash_db
+  #     RABBITMQ_HOST: rabbitmq
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+
+  # go-worker:
+  #   build:
+  #     context: ./worker
+  #     dockerfile: Dockerfile
+  #   container_name: go-worker
+  #   environment:
+  #     RABBITMQ_HOST: rabbitmq
+  #     NESTJS_API_URL: http://nestjs-api:3000/api/weather/logs
+  #   depends_on:
+  #     - rabbitmq
+  #     - nestjs-api
+
+  python-collector:
+    build:
+      context: ./collector
+      dockerfile: Dockerfile
+    container_name: python-collector
+    env_file:
+      - ./.env
+    environment:
+      API_BASE_URL: https://api.openweathermap.org/data/2.5/weather?
+      QUEUE_NAME: weather_logs_queue
+      RABBITMQ_HOST: rabbitmq
+      LATITUDE: -27.090300
+      LONGITUDE: -48.611400
+    depends_on:
+      - rabbitmq
+
+  # react-frontend:
+  #   build:
+  #     context: ./web
+  #     dockerfile: Dockerfile
+  #   container_name: react-frontend
+  #   ports:
+  #     - "5173:80"
+  #   environment:
+  #     VITE_API_URL: http://localhost:3000
+  #   depends_on:
+  #     - nestjs-api
+
+volumes:
+  mongodb_data:
+    driver: local

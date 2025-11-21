@@ -1,0 +1,24 @@
+/apps/api/node_modules
+/apps/web/node_modules
+
+/apps/collector/venv
+/apps/collector/__pycache__
+/apps/collector/*.pyc
+
+/apps/worker/main  # Binário Go compilado
+/apps/worker/*.exe # Binários do Windows
+/apps/worker/vendor/ # Dependências Go Modules
+
+/apps/api/dist 
+
+/apps/web/dist
+/apps/web/.vite/
+
+*.log
+.DS_Store
+
+.env
+.env.*.local
+.env.local
+
+.vscode/
