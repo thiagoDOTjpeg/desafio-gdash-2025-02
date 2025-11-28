@@ -17,32 +17,33 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
 
-  # nestjs-api:
-  #   build:
-  #     context: ./api
-  #     dockerfile: Dockerfile
-  #   container_name: nestjs-api
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     NODE_ENV: development
-  #     MONGO_URI: mongodb://mongodb:27017/gdash_db
-  #     RABBITMQ_HOST: rabbitmq
-  #   depends_on:
-  #     - mongodb
-  #     - rabbitmq
+  nestjs-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: nestjs-api
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      MONGO_URL: mongodb://mongodb:27017/weather_db
+      RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - mongodb
+      - rabbitmq
 
-  # go-worker:
-  #   build:
-  #     context: ./worker
-  #     dockerfile: Dockerfile
-  #   container_name: go-worker
-  #   environment:
-  #     RABBITMQ_HOST: rabbitmq
-  #     NESTJS_API_URL: http://nestjs-api:3000/api/weather/logs
-  #   depends_on:
-  #     - rabbitmq
-  #     - nestjs-api
+  go-worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: go-worker
+    environment:
+      RABBITMQ_URL: amqp://user:password@rabbitmq:5672/
+      MONGO_URL: mongodb://mongodb:27017/
+      NESTJS_API_URL: http://nestjs-api:3000
+    depends_on:
+      - rabbitmq
+      - nestjs-api
 
   python-collector:
     build:

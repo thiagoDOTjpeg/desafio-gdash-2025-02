@@ -29,7 +29,7 @@ WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "")
 LATITUDE = os.getenv('LATITUDE', '40.7128') 
 LONGITUDE = os.getenv('LONGITUDE', '-74.0060') 
 
-INTERVALO_SEGUNDOS = 600 
+INTERVALO_SEGUNDOS = 120 
 
 def fetch_weather_data():
     params = {
